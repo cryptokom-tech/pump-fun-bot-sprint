@@ -85,8 +85,13 @@ dataset (2–3 Nov 2026, 128,058 events):
 - L1 regrade reproduced byte for byte (deterministic).
 - 9 rejected orders (mostly slippage on fast launches), 1 failed tx.
 
-Stress test (`grade-local --stress 20`): see `grade-stress.log` in the work
-directory. Honest read: the dev score leans on this window's coins; the
+Stress test (`grade-local --stress 5`, log:
+`~/workspace/makefun/pump-fun-bot-sprint/grade-stress.log`): 5 block
+surrogates: +0.04 / −0.05 / −0.02 / −0.02 / +0.06 SOL; median −0.02, p10
+−0.05, p90 +0.06; 3 of 5 lost money; dev score above 3 of 5. Warning: half
+or more copies lost money. (A 20-copy stress run was started first but
+killed after ~18 min without finishing; the 5-copy run above is the recorded
+result.) Honest read: the dev score leans on this window's coins; the
 fresh 6-hour final window is a lottery among near-breakeven bots, and this
 design is the strongest measured shape (broad buying and momentum chasing
 both scored clearly negative on the same data).
