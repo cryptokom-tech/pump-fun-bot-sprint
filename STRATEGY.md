@@ -71,6 +71,25 @@ total — cheap insurance for the guardrail.
 
 ## Local measurements
 
-(Filled in after `grade-local` runs; dev window is the kit's frozen 24h
-dataset, final window is a fresh 6h slice — expect the dev number to flatter
-the bot and the stress test to show the honest spread.)
+Official `grade-local` (process driver, commit
+`402130dd479d84d60fec4dd5d16b47247ddeee01`), dev window = kit's frozen 24h
+dataset (2–3 Nov 2026, 128,058 events):
+
+- **Net PnL +0.030992819 SOL** (return +0.31%, 90% interval −0.048..+0.146 SOL)
+- **29 coins, 29 round trips**, 58 fills, win rate 13.8%, max drawdown 0.0037
+- Fees: 0.0268 SOL curve + 0.0062 SOL tx; at 2x fees net −0.0021 SOL
+- **Guardrails met** (29 coins ≥ 0.01 SOL round trips, drawdown ok)
+- Top 3 coins made 97% of the gains; without them net PnL is −0.04 SOL —
+  the bot lives or dies by catching 1–2 runners per window, like every
+  sniper on this data.
+- L1 regrade reproduced byte for byte (deterministic).
+- 9 rejected orders (mostly slippage on fast launches), 1 failed tx.
+
+Stress test (`grade-local --stress 20`): see `grade-stress.log` in the work
+directory. Honest read: the dev score leans on this window's coins; the
+fresh 6-hour final window is a lottery among near-breakeven bots, and this
+design is the strongest measured shape (broad buying and momentum chasing
+both scored clearly negative on the same data).
+
+The final window is a fresh 6h slice — expect the dev number to flatter
+the bot and the stress test to show the honest spread.
