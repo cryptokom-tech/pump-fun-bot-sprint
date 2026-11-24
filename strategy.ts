@@ -183,6 +183,14 @@ export function createStrategy() {
     return false;
   }
 
+  /** A sell already sent for this mint and not yet resolved: do not send another. */
+  function hasPendingSell(state: BotState, mint: string): boolean {
+    for (const p of state.pending.values()) {
+      if (p.order.side === 'sell' && p.order.mint === mint) return true;
+    }
+    return false;
+  }
+
   function onBatch(state: BotState, batch: Batch): OrderInput[] {
     const orders: OrderInput[] = [];
     trackEvents(batch);
@@ -192,6 +200,7 @@ export function createStrategy() {
 
     // --- exits first: free positions before deciding new entries ---
     for (const [mint, holding] of state.positions) {
+      if (hasPendingSell(state, mint)) continue; // sell already in flight; it fills 2 slots later
       const info = coins.get(mint);
       if (info === undefined || info.kind === null) {
         // A position we cannot explain: sell it rather than hold it blind.
